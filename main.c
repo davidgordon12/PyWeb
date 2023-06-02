@@ -1,4 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <termios.h>
+#include <string.h>
+#include <unistd.h>
 
 #define BOARD_WIDTH 21
 #define BOARD_HEIGHT 13
@@ -9,19 +14,56 @@
 #define BORDER = 1
 #define WHITESPACE = 2
 #define SNAKE = 3
+#define APPLE = 4
 
 void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]);
 void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]);
-void place_apple();
+void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]);
+void run();
 
 int main() {
+    printf("Press enter key to start.\n");
+    char buffer[2];
+    fgets(buffer, 2, stdin);
+    run();
+}
+
+void run() {
     int board[BOARD_WIDTH][BOARD_HEIGHT];
 
     init_board(board);
 
+    place_random_apple(board);
+
     draw_board(board);
 
-    return -1;
+    char c;
+    struct termios new_kbd_mode;
+    struct termios g_old_kbd_mode;
+
+    /* put keyboard (stdin) in raw, unbuffered mode */
+    tcgetattr (0, &g_old_kbd_mode);
+    memcpy (&new_kbd_mode, &g_old_kbd_mode, sizeof (struct termios));
+
+    new_kbd_mode.c_lflag &= ~(ICANON | ECHO);
+    new_kbd_mode.c_cc[VTIME] = 0;
+    new_kbd_mode.c_cc[VMIN] = 1;
+    tcsetattr (0, TCSANOW, &new_kbd_mode);
+
+    int alive = 1;
+
+    while(alive) {
+        read (0, &c, 1);
+        switch(c) {
+            case 'a':
+                
+            case 'w':
+
+            case 's':
+
+            case 'd':
+        }
+    }
 }
 
 void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
@@ -55,6 +97,9 @@ void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
             else if(board[x][y] == 3) {
                 printf("^");
             }
+            else if(board[x][y] == 4) {
+                printf("@");
+            }
             if(x == 20) {
                 printf("\n");
             }
@@ -62,5 +107,16 @@ void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
     }
 }
 
-void place_apple() {
+void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
+    srand(time(NULL));
+
+    int rand_x = rand() % 19 + 1;
+    int rand_y = rand() % 11 + 1;
+
+    while( (rand_x == 10) && (rand_y == 6) ) {
+        rand_x = rand() % 19 + 1;
+        rand_y = rand() % 11 + 1;
+    }
+
+    board[rand_x][rand_y] APPLE;
 }
