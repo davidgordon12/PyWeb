@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #define BOARD_WIDTH 21
-#define BOARD_HEIGHT 12
+#define BOARD_HEIGHT 13
 
 #define BORDER = 1
 #define WHITESPACE = 2
@@ -26,7 +26,7 @@ void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
             if( (x == 0) || (y == 0) ) {
                 board[x][y] BORDER;    
             }
-            else if( (x == 20) || (y == 11)) {
+            else if( (x == 20) || (y == 12)) {
                 board[x][y] BORDER;
             }
             else {
