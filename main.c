@@ -11,15 +11,27 @@
 #define CENTER_X 10
 #define CENTER_Y 6
 
-#define BORDER = 1
-#define WHITESPACE = 2
-#define SNAKE = 3
-#define APPLE = 4
+#define BORDER 1
+#define WHITESPACE 2
+#define SNAKE 3
+#define APPLE 4
+
+#define UP 'w'
+#define DOWN 's'
+#define LEFT 'a'
+#define RIGHT 'd'
 
 void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]);
 void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]);
 void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]);
+void move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake);
 void run();
+
+typedef struct snake_t {
+    int x_pos;
+    int y_pos;
+    char direction;
+} snake_t;
 
 int main() {
     printf("Press enter key to start.\n");
@@ -29,13 +41,20 @@ int main() {
 }
 
 void run() {
+    snake_t snake;
+
+    snake.x_pos = 10;
+    snake.y_pos = 6;
+    snake.direction = 'w';
+
+
     int board[BOARD_WIDTH][BOARD_HEIGHT];
 
     init_board(board);
 
     place_random_apple(board);
 
-    draw_board(board);
+    draw_board(board); */
 
     char c;
     struct termios new_kbd_mode;
@@ -53,16 +72,19 @@ void run() {
     int alive = 1;
 
     while(alive) {
+        sleep(1);
         read (0, &c, 1);
         switch(c) {
-            case 'a':
-                
-            case 'w':
-
-            case 's':
-
-            case 'd':
+            case UP:
+                snake.direction = UP;
+            case DOWN:
+                snake.direction = DOWN;
+            case LEFT:
+                snake.direction = LEFT;
+            case RIGHT:
+                snake.direction = RIGHT;
         }
+        move_snake(snake);
     }
 }
 
@@ -70,34 +92,34 @@ void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
     for(int x = 0; x < BOARD_WIDTH; x++) {
         for(int y = 0; y < BOARD_HEIGHT; y++) {
             if( (x == 0) || (y == 0) ) {
-                board[x][y] BORDER;    
+                board[x][y] = BORDER;    
             }
             else if( (x == 20) || (y == 12)) {
-                board[x][y] BORDER;
+                board[x][y] = BORDER;
             }
             else {
-                board[x][y] WHITESPACE;
+                board[x][y] = WHITESPACE;
             }
         }
     }
 
-    board[CENTER_X][CENTER_Y] SNAKE;
+    board[CENTER_X][CENTER_Y] = SNAKE;
 }
 
-void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
+void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
     for(int y = 0; y < BOARD_HEIGHT; y++) {
         for(int x = 0; x < BOARD_WIDTH; x++) {
             printf(" ");
-            if(board[x][y] == 1) {
+            if(board[x][y] == BORDER) {
                 printf("#");
             }
-            else if(board[x][y] == 2) {
+            else if(board[x][y] == WHITESPACE) {
                 printf("*");
             }
-            else if(board[x][y] == 3) {
+            else if(board[x][y] == SNAKE) {
                 printf("^");
             }
-            else if(board[x][y] == 4) {
+            else if(board[x][y] == APPLE) {
                 printf("@");
             }
             if(x == 20) {
@@ -118,5 +140,13 @@ void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
         rand_y = rand() % 11 + 1;
     }
 
-    board[rand_x][rand_y] APPLE;
+    board[rand_x][rand_y] = APPLE;
+}
+
+void move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
+    if(snake->direction == UP && snake->y_pos != 20) {
+        snake->y_pos+1;
+    }
+
+    board[snake->x_pos][snake->y_pos] = 3;
 }
