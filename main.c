@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define BOARD_WIDTH 20
+#define BOARD_WIDTH 21
 #define BOARD_HEIGHT 12
 
 #define BORDER = 1
@@ -26,7 +26,7 @@ void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
             if( (x == 0) || (y == 0) ) {
                 board[x][y] BORDER;    
             }
-            else if( (x == 19) || (y == 11)) {
+            else if( (x == 20) || (y == 11)) {
                 board[x][y] BORDER;
             }
             else {
@@ -34,6 +34,8 @@ void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
             }
         }
     }
+
+    board[10][6] = 3;
 }
 
 void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
@@ -46,7 +48,10 @@ void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
             else if(board[x][y] == 2) {
                 printf("*");
             }
-            if(x == 19) {
+            else if(board[x][y] == 3) {
+                printf("^");
+            }
+            if(x == 20) {
                 printf("\n");
             }
         }
