@@ -23,8 +23,11 @@ int main() {
 void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
     for(int x = 0; x < BOARD_WIDTH; x++) {
         for(int y = 0; y < BOARD_HEIGHT; y++) {
-            if(x == 0 || y == 0) {
+            if( (x == 0) || (y == 0) ) {
                 board[x][y] BORDER;    
+            }
+            else if( (x == 19) || (y == 11)) {
+                board[x][y] BORDER;
             }
             else {
                 board[x][y] WHITESPACE;
