@@ -3,12 +3,16 @@
 #define BOARD_WIDTH 21
 #define BOARD_HEIGHT 13
 
+#define CENTER_X 10
+#define CENTER_Y 6
+
 #define BORDER = 1
 #define WHITESPACE = 2
 #define SNAKE = 3
 
 void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]);
 void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]);
+void place_apple();
 
 int main() {
     int board[BOARD_WIDTH][BOARD_HEIGHT];
@@ -35,7 +39,7 @@ void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
         }
     }
 
-    board[10][6] = 3;
+    board[CENTER_X][CENTER_Y] SNAKE;
 }
 
 void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
@@ -56,4 +60,7 @@ void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
             }
         }
     }
+}
+
+void place_apple() {
 }
