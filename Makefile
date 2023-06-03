@@ -1,11 +1,7 @@
 build:
-	gcc -Wall -Werror main.c -o main
-
+	gcc main.c -o bin/main.o -c
+	gcc game.c -o bin/game.o -c
+	gcc -o snake bin/main.o bin/game.o
 
 run: build
-	-./main
-
-clean:
-	rm -rf main
-
-full: clean build run
+	-./snake
