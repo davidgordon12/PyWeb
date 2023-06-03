@@ -33,7 +33,7 @@ typedef struct snake_t {
 void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake);
 void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]);
 void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]);
-void move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake);
+int move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake);
 void run();
 
 #endif

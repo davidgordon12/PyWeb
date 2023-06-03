@@ -32,18 +32,30 @@ void run() {
     int alive = 1;
 
     while(alive) {
-        sleep(1);
-        read (0, &c, 1);
-        switch(c) {
-            case UP:
-                snake.direction = UP;
-            case DOWN:
-                snake.direction = DOWN;
-            case LEFT:
-                snake.direction = LEFT;
-            case RIGHT:
-                snake.direction = RIGHT;
-        }
+    read (0, &c, 1);
+    switch(c) {
+        case UP:
+            snake.direction = UP;
+            alive = move_snake(board, &snake);
+            break;
+
+        case DOWN:
+            snake.direction = DOWN;
+            alive = move_snake(board, &snake);
+            break;
+
+        case LEFT:
+            snake.direction = LEFT;
+            alive = move_snake(board, &snake);
+            break;
+
+        case RIGHT:
+            snake.direction = RIGHT;
+            alive = move_snake(board, &snake);
+            break;
+    }
+
+    draw_board(board, &snake);
     }
 }
 
@@ -102,10 +114,31 @@ void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
     board[rand_x][rand_y] = APPLE;
 }
 
-/* void move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
-    if(snake->direction == UP && snake->y_pos != 20) {
-        snake->y_pos+1;
+int move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
+    /* remove old snake head */
+    board[snake->x_pos][snake->y_pos] = WHITESPACE;
+
+    if(snake->direction == UP && snake->y_pos != 1) {
+        snake->y_pos--;
+    }
+
+    if(snake->direction == DOWN && snake->y_pos != 11) {
+        snake->y_pos++;
+    }
+    
+    if(snake->direction == LEFT && snake->x_pos != 1) {
+        snake->x_pos--;
+    }
+
+    if(snake->direction == RIGHT && snake->x_pos != 19) {
+        snake->x_pos++;
+    }
+
+    if(board[snake->x_pos][snake->y_pos] == APPLE) {
+        return 0;
     }
 
     board[snake->x_pos][snake->y_pos] = 3;
-} */
+
+    return 1;
+}
