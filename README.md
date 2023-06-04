@@ -1,6 +1,11 @@
 # Snake
 Classic Snake game written in C without the use of any graphics libraries 
 
+# How to play
+ - W, A, S, D
+ - Collect Apples (@)
+ - Don't run into the Walls (#) or yourself (^)
+
 ## Prerequisites
 - make (optional)
 - gcc
