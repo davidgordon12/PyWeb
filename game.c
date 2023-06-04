@@ -59,7 +59,9 @@ void run() {
                 break;
         }
 
-        draw_board(board, &snake);
+        if(alive) {
+            draw_board(board, &snake);
+        }
     }
 }
 
@@ -121,19 +123,19 @@ void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
 int move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
     board[snake->x_pos][snake->y_pos] = WHITESPACE;
 
-    if(snake->direction == UP && snake->y_pos != 1) {
+    if(snake->direction == UP) {
         snake->y_pos--;
     }
 
-    if(snake->direction == DOWN && snake->y_pos != 11) {
+    if(snake->direction == DOWN) {
         snake->y_pos++;
     }
     
-    if(snake->direction == LEFT && snake->x_pos != 1) {
+    if(snake->direction == LEFT) {
         snake->x_pos--;
     }
 
-    if(snake->direction == RIGHT && snake->x_pos != 19) {
+    if(snake->direction == RIGHT) {
         snake->x_pos++;
     }
 
@@ -143,10 +145,12 @@ int move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
     }
 
     if(board[snake->x_pos][snake->y_pos] == SNAKE) {
+        printf("\n Game Over! Final score: %d \n", snake->size);
         return 0;
     }
 
     if(board[snake->x_pos][snake->y_pos] == BORDER) {
+        printf("\n Game Over! Final score: %d \n", snake->size-1);
         return 0;
     }
 
