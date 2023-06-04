@@ -13,7 +13,7 @@ Classic Snake game written in C without the use of any graphics libraries
 - Clone repo
 - In a terminal, run the following
 ```mkdir -p bin
-	gcc main.c -o bin/main.o -c
-	gcc game.c -o bin/game.o -c
-	gcc -o snake bin/main.o bin/game.o
-  ./snake```
+   gcc main.c -o bin/main.o -c
+   gcc game.c -o bin/game.o -c
+   gcc -o snake bin/main.o bin/game.o
+  ./snake
