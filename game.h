@@ -27,6 +27,7 @@
 typedef struct snake_t {
     int x_pos;
     int y_pos;
+    int size;
     char direction;
 } snake_t;
 

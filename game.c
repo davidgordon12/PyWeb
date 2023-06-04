@@ -1,12 +1,26 @@
 #include "game.h"
 
 void run() {
+    /* put keyboard (stdin) in raw, unbuffered mode */
+    char c;
+
+    struct termios new_kbd_mode;
+    struct termios g_old_kbd_mode;
+
+    tcgetattr (0, &g_old_kbd_mode);
+    memcpy (&new_kbd_mode, &g_old_kbd_mode, sizeof (struct termios));
+
+    new_kbd_mode.c_lflag &= ~(ICANON | ECHO);
+    new_kbd_mode.c_cc[VTIME] = 0;
+    new_kbd_mode.c_cc[VMIN] = 1;
+    tcsetattr (0, TCSANOW, &new_kbd_mode);
+
     snake_t snake;
 
     snake.x_pos = 10;
     snake.y_pos = 6;
+    snake.size = 1;
     snake.direction = 'w';
-
 
     int board[BOARD_WIDTH][BOARD_HEIGHT];
 
@@ -16,46 +30,36 @@ void run() {
 
     draw_board(board, &snake);
 
-    char c;
-    struct termios new_kbd_mode;
-    struct termios g_old_kbd_mode;
-
-    /* put keyboard (stdin) in raw, unbuffered mode */
-    tcgetattr (0, &g_old_kbd_mode);
-    memcpy (&new_kbd_mode, &g_old_kbd_mode, sizeof (struct termios));
-
-    new_kbd_mode.c_lflag &= ~(ICANON | ECHO);
-    new_kbd_mode.c_cc[VTIME] = 0;
-    new_kbd_mode.c_cc[VMIN] = 1;
-    tcsetattr (0, TCSANOW, &new_kbd_mode);
-
     int alive = 1;
 
     while(alive) {
-    read (0, &c, 1);
-    switch(c) {
-        case UP:
-            snake.direction = UP;
-            alive = move_snake(board, &snake);
-            break;
+        read (0, &c, 1);
+        switch(c) {
+            case UP:
+                snake.direction = UP;
+                alive = move_snake(board, &snake);
+                break;
 
-        case DOWN:
-            snake.direction = DOWN;
-            alive = move_snake(board, &snake);
-            break;
+            case DOWN:
+                snake.direction = DOWN;
+                alive = move_snake(board, &snake);
+                break;
 
-        case LEFT:
-            snake.direction = LEFT;
-            alive = move_snake(board, &snake);
-            break;
+            case LEFT:
+                snake.direction = LEFT;
+                alive = move_snake(board, &snake);
+                break;
 
-        case RIGHT:
-            snake.direction = RIGHT;
-            alive = move_snake(board, &snake);
-            break;
-    }
+            case RIGHT:
+                snake.direction = RIGHT;
+                alive = move_snake(board, &snake);
+                break;
+            
+            default: 
+                break;
+        }
 
-    draw_board(board, &snake);
+        draw_board(board, &snake);
     }
 }
 
@@ -115,7 +119,6 @@ void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
 }
 
 int move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
-    /* remove old snake head */
     board[snake->x_pos][snake->y_pos] = WHITESPACE;
 
     if(snake->direction == UP && snake->y_pos != 1) {
@@ -135,6 +138,15 @@ int move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
     }
 
     if(board[snake->x_pos][snake->y_pos] == APPLE) {
+        snake->size++;
+        place_random_apple(board);
+    }
+
+    if(board[snake->x_pos][snake->y_pos] == SNAKE) {
+        return 0;
+    }
+
+    if(board[snake->x_pos][snake->y_pos] == BORDER) {
         return 0;
     }
 
