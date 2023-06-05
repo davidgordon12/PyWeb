@@ -121,6 +121,8 @@ void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
 }
 
 int move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
+    int prev_x = snake->x_pos;
+    int prev_y = snake->y_pos;
     board[snake->x_pos][snake->y_pos] = WHITESPACE;
 
     if(snake->direction == UP) {
@@ -142,6 +144,7 @@ int move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
     if(board[snake->x_pos][snake->y_pos] == APPLE) {
         snake->size++;
         place_random_apple(board);
+        board[prev_x][prev_y] = SNAKE;
     }
 
     if(board[snake->x_pos][snake->y_pos] == SNAKE) {
