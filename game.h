@@ -27,8 +27,8 @@
 typedef struct snake_t {
     int x_pos;
     int y_pos;
-    int size;
     char direction;
+    struct snake_t* prev;
 } snake_t;
 
 void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake);
