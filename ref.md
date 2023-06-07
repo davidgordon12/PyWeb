@@ -19,4 +19,8 @@
 
 - on key input we change the direction of our snake
 
-- sleep(x) seconds before we move again, afterwards increment the snake head position in the last direction
+- iterate through linked list snake_t, save the position of each node, set the position of node->prev to node
+
+## eating apples
+
+- when we eat an apple, we can create a new node(snake_t), and set the prev value(node->prev) to be equal to the last snake we had, which will keep adding snake heads to the front of the list
