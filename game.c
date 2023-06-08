@@ -22,10 +22,10 @@ void init_board(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
 }
 
 void draw_board(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t *snake) {
-    snake_t* head = snake;
-    while(head != NULL) {
-        board[head->x_pos][head->y_pos] = SNAKE;
-        head = head->prev;
+    snake_t* current = snake;
+    while(current->prev != NULL) {
+        board[current->x_pos][current->y_pos] = SNAKE;
+        current = current->prev;
     }
 
     for (int y = 0; y < BOARD_HEIGHT; y++) {
@@ -113,7 +113,7 @@ void run() {
         }
     }
 
-    printf("\n Game Over! Final score: %d", count);
+    printf("Game Over! Final score: %d \n", count);
 }
 
 void place_random_apple(int board[BOARD_WIDTH][BOARD_HEIGHT]) {
@@ -156,14 +156,22 @@ int move_snake(int board[BOARD_WIDTH][BOARD_HEIGHT], snake_t* snake) {
         place_random_apple(board);
         board[prev_x][prev_y] = SNAKE;
 
+        snake_t* current = snake;
+        while(current->prev != NULL) {
+            current = current->prev;
+        }
+
         snake_t* new_head = (snake_t*)malloc(sizeof(snake_t));
 
         new_head->direction = snake->direction;
-        new_head->x_pos = snake->x_pos;
-        new_head->y_pos = snake->y_pos;
+        new_head->x_pos = prev_x;
+        new_head->y_pos = prev_y;
 
-        new_head->prev = snake;
-        snake = new_head;
+        current->prev = new_head;
+    }
+
+    if(board[snake->x_pos][snake->y_pos] == BORDER) {
+        return 0;
     }
 
     /* 
